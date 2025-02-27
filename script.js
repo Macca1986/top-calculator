@@ -33,3 +33,9 @@ function operate (operator, num1, num2) {
         return divide(num1, num2);
     }
 }
+
+// variable to store the screen value at any given time
+let display = document.querySelector("#screen");
+let displayNum = display.innerHTML;
+
+// function to update screen display when digits are pressed
