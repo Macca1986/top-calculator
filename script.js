@@ -66,34 +66,21 @@ for (let i = 0; i < digitButtons.length; i++) {
 // event listeners on operator buttons to update operator on click
 const operatorButtons = document.querySelectorAll(".operator");
 
-// for (let i = 0; i < operatorButtons.length; i++) {
-//     let currentButton = operatorButtons[i];
-//     currentButton.addEventListener("click", (event) => {
-//         if (firstNum !== undefined && operator !== undefined && !operatorLastClick) {
-//             // Perform operation before setting new operator
-//             secondNum = display.innerHTML;
-//             result = operate(operator, firstNum, secondNum);
-//             display.innerHTML = result;
-//             firstNum = result; // Store result as the new firstNum for continued operations
-//         } else {
-//             firstNum = display.innerHTML; // Store first number if it's the first operation
-//         }
-
-//         operator = event.target.id; // Update the operator
-//         operatorLastClick = true; // Indicate that an operator was just clicked
-//     });
-// }
-
 for (let i = 0; i < operatorButtons.length; i++) {
     let currentButton = operatorButtons[i];
     currentButton.addEventListener("click", (event) => {
-        operator = event.target.id;
-        // console.log("the operator is now: " + operator);
-        // need to store the value of the screen when the operator was pressed in a variable
-        firstNum = display.innerHTML;
-        // console.log("the first number is: " + firstNum);
-        operatorLastClick = true;
-        console.log("operator last clicked: " + operatorLastClick);
+        if (firstNum !== undefined && operator !== undefined && !operatorLastClick) {
+            // Perform operation before setting new operator
+            secondNum = display.innerHTML;
+            result = operate(operator, firstNum, secondNum);
+            display.innerHTML = result;
+            firstNum = result; // Store result as the new firstNum for continued operations
+        } else {
+            firstNum = display.innerHTML; // Store first number if it's the first operation
+        }
+
+        operator = event.target.id; // Update the operator
+        operatorLastClick = true; // Indicate that an operator was just clicked
     });
 }
 
@@ -101,13 +88,16 @@ for (let i = 0; i < operatorButtons.length; i++) {
 const equalsButton = document.querySelector("#equals");
 
 equalsButton.addEventListener("click", (event) => {
-    // get second number from inner HTML of screen
-    secondNum = display.innerHTML;
-    // console.log("secondNum is: " + secondNum);
-    result = operate(operator, firstNum, secondNum);
-    display.innerHTML = result;
-    displayNum = result;
-})
+    if (firstNum !== undefined && operator !== undefined) {
+        secondNum = display.innerHTML;
+        result = operate(operator, firstNum, secondNum);
+        display.innerHTML = result;
+        displayNum = result;
+        firstNum = result; // Store result as firstNum for continued calculations
+        operator = undefined; // Reset operator after equals
+        operatorLastClick = false;
+    }
+});
 
 // event listener for clear button 
 const clearButton = document.querySelector("#clear");
@@ -119,17 +109,3 @@ clearButton.addEventListener("click", (event) => {
     secondNum = 0;
     result = 0;
 })
-
-/*
-need to make the operators conduct the calculation and update the display as if the equals button were pressed
-PSEUDOCODE:
-
-if it's the first time the operator button is pressed, don't do the calculation
-
-if an operator has been pressed recently, do the calculation and update the display
-
-when clear is pressed, update that the operator button hasn't been pressed
-
-when the equals button is pressed, display the answer and update the operator button hasn't been pressed
-
-*/
